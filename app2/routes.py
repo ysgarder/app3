@@ -2,7 +2,7 @@
 
 from app2 import app
 from app2.forms import LoginForm, RegForm
-from flask import render_template, redirect, flash, url_for
+from flask import render_template, redirect, flash, url_for, request
 
 
 @app.route('/')
@@ -34,15 +34,15 @@ def login():
 
 
 @app.route('/register', methods=['GET', 'POST'])
-def registration():
+def register():
     error = None
-    request = RegForm()
+    form = RegForm()
     if request.method == 'POST':
-        if request.form['Username'] != 'admin' or request.form['password'] != 'admin':
+        if form['Username'] != 'admin' or form['password'] != 'admin':
             error = "Invalid Credentials. Please Try Again."
         else:
             return redirect(url_for('spell_check'))
-    return render_template('login.html', error=error)
+    return render_template('register.html', error=error, form=form)
 
 
 """

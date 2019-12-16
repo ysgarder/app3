@@ -8,3 +8,11 @@ class LoginForm(FlaskForm):
     pword = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
+
+
+class RegForm(FlaskForm):
+    uname = StringField('Username', validators=[DataRequired()])
+    pword = PasswordField('Password', validators=[DataRequired()])
+    twofa = StringField('2FA?', id='2fa')
+    remember_me = BooleanField('Remember Me')
+    submit = SubmitField('Sign In')
