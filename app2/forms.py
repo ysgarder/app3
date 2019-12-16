@@ -16,3 +16,9 @@ class RegForm(FlaskForm):
     twofa = StringField('2FA?', id='2fa')
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
+
+
+class SpellCheckForm(FlaskForm):
+    inputtext = StringField('Input_Text', validators=[DataRequired()])
+    outputtext = StringField('Check Results', validators=[DataRequired()])
+    submittext = SubmitField('Submit text')

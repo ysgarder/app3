@@ -1,8 +1,11 @@
 # from flask import Flask, render_template, redirect, url_for, request
 
 from app2 import app
-from app2.forms import LoginForm, RegForm
+from app2.forms import LoginForm, RegForm, SpellCheckForm
 from flask import render_template, redirect, flash, url_for, request
+from subprocess import check_output
+
+from pylint.checkers import spelling
 
 
 @app.route('/')
@@ -45,14 +48,12 @@ def register():
     return render_template('register.html', error=error, form=form)
 
 
-"""
-@app.route('/your/webroot/spell_check')
-def hello_world():
-    return 'Hello World!'
 
-
-
-@app.route('/login', methods=['GET', 'POST'])
-
-
-"""
+@app.route('/spell_check')
+def spell_check():
+    error = None
+    form = SpellCheckForm()
+    if request.method == 'POST':
+        stdout = check_output(['./a.out', './dictionary.txt', spelling]).decode('utf-8')
+        form['outputtext'] = stdout
+    return render_template('spell_check.html', error=error, form=form)
