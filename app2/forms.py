@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, FieldList
 from wtforms.validators import DataRequired, ValidationError, EqualTo
-from app2.models import User
+from app2.models import User, SpellQueries
 
 
 class LoginForm(FlaskForm):
@@ -32,3 +32,14 @@ class SpellCheckForm(FlaskForm):
     textout = StringField('Check Results')
     misspelled = StringField('Missspelled Words')
     submittext = SubmitField('Submit text')
+
+class HistoryForm(FlaskForm):
+    num_queries = IntegerField('Total Queries', id='numqueries')
+    user_query = StringField('Find User Queries', id='userquery', validators=[DataRequired])
+    submit_query = SubmitField('Search User History')
+    history = FieldList('Results',id='query' )
+
+    def gethistory(self):
+        user = User.query.filter_by(username=self.user_query).first()
+
+        return SpellQueries.query.filter_by(user_id=User.id)

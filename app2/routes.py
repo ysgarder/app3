@@ -2,11 +2,11 @@
 import os
 
 from app2 import app, db
-from app2.forms import LoginForm, RegForm, SpellCheckForm
+from app2.forms import LoginForm, RegForm, SpellCheckForm, HistoryForm
 from flask import render_template, redirect, flash, url_for, request
 from subprocess import Popen, PIPE
 from flask_login import current_user, login_user
-from app2.models import User
+from app2.models import User, SpellQueries
 from pylint.checkers import spelling
 from werkzeug.urls import url_parse
 
@@ -24,6 +24,17 @@ if __name__ == '__main__':
 def index():
     return render_template('index.html', title='Microblg')
 
+
+@app.route('/history', methods=['GET', 'POST'])
+def history():
+    if not current_user.is_authenticated:
+        redirect(url_for('login'))
+    form = HistoryForm()
+    if request.method == 'POST':
+        spelling_queries = form.gethistory()
+        spelling_queries
+        return render_template('history.html',)
+    return render_template('history.html', title='History search', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -74,7 +85,9 @@ def spell_check():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
     form = SpellCheckForm()
+    query = SpellQueries(user_id=User.get_id(current_user), query=form.textout)
     if request.method == 'POST':
+
         dir = os.getcwd()
         f = open("infile", "w+")
         f.write(form.inputtext.data)

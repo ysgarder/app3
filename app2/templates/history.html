@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Register</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.user_query.label }}<br>
+            {{ form.user_query(size=32) }}
+
+        </p>
+        <p>
+            {{ form.num_queries.label }} {{ form.num_queries }}
+        </p>
+        <p>
+            {%  for query in form.gethistory() %}
+            <p>query.timestamp</p>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}
